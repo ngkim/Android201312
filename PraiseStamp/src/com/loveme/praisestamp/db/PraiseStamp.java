@@ -1,20 +1,31 @@
 package com.loveme.praisestamp.db;
+
+import java.util.Date;
+
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable(tableName = "praise_stamp")
 public class PraiseStamp {
-	
-	@DatabaseField(id = true, generatedId = true) private int id;
-	@DatabaseField private String title;
-	@DatabaseField private int goalCnt;
-	@DatabaseField private int nowCnt;
+
+	@DatabaseField(id = true, generatedId = true)
+	private int id;
+	@DatabaseField
+	private String title;
+	@DatabaseField
+	private String present;
+	@DatabaseField
+	private int goalCnt;
+	@DatabaseField
+	private int nowCnt;
+	@DatabaseField
+	private Date startDate;
 
 	public PraiseStamp(String title, int goal) {
 		this.title = title;
 		this.goalCnt = goal;
 	}
-	
+
 	public int getId() {
 		return id;
 	}
@@ -31,6 +42,14 @@ public class PraiseStamp {
 		this.title = title;
 	}
 
+	public String getPresent() {
+		return present;
+	}
+
+	public void setPresent(String present) {
+		this.present = present;
+	}
+
 	public int getGoalCnt() {
 		return goalCnt;
 	}
@@ -45,6 +64,18 @@ public class PraiseStamp {
 
 	public void setNowCnt(int nowCnt) {
 		this.nowCnt = nowCnt;
+	}
+	
+	public void increaseNowCnt() {
+		nowCnt++;
+	}
+
+	public Date getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
 	}
 
 	@Override
