@@ -1,5 +1,12 @@
 package com.loveme.praisestamp;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.j256.ormlite.dao.Dao;
+import com.loveme.praisestamp.db.DtoFactory;
+import com.loveme.praisestamp.db.PraiseStamp;
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.graphics.Typeface;
@@ -13,17 +20,30 @@ import android.widget.TextView;
 
 public class MainActivity extends Activity {
 
-	private ImageView addImage() {
+	private int stampsPerRow = 4;
+	private DtoFactory dtoFactory;
+
+	private ImageView goodJobStamp() {
 		// day 1 column
-		ImageView imageGoodJob = new ImageView(this);
-		imageGoodJob.setImageDrawable(getResources().getDrawable(
-				R.drawable.goodjob));
-		imageGoodJob.setPadding(0, 0, 0, 0); // padding in each image if needed
-		
-		return imageGoodJob;
+		ImageView imgStamp = new ImageView(this);
+		imgStamp.setImageDrawable(getResources()
+				.getDrawable(R.drawable.goodjob));
+		imgStamp.setPadding(0, 0, 0, 0); // padding in each image if needed
+
+		return imgStamp;
+	}
+
+	private ImageView emptyStamp() {
+		ImageView imgStamp = new ImageView(this);
+		imgStamp.setImageDrawable(getResources().getDrawable(R.drawable.empty));
+		imgStamp.setPadding(0, 0, 0, 0); // padding in each image if needed
+
+		return imgStamp;
 	}
 
 	private void createTables() {
+		PraiseStamp stamp = getStampFromDB();
+		
 		TableLayout table = new TableLayout(this);
 		table.setStretchAllColumns(true);
 		table.setShrinkAllColumns(true);
@@ -33,7 +53,7 @@ public class MainActivity extends Activity {
 
 		// title column/row
 		TextView title = new TextView(this);
-		title.setText("ƒ™¬˘µµ¿Â");
+		title.setText(stamp.getTitle());
 		title.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18);
 		title.setGravity(Gravity.CENTER);
 		title.setTypeface(Typeface.SERIF, Typeface.BOLD);
@@ -43,36 +63,70 @@ public class MainActivity extends Activity {
 
 		rowTitle.addView(title, params);
 
-		TextView day5Label = new TextView(this);
-		day5Label.setText("Feb 11");
-		day5Label.setTypeface(Typeface.SERIF, Typeface.BOLD);
+		int totalRows = (stamp.getGoalCnt() / stampsPerRow) + 1;
 
-		TableRow rowDayLabels1 = new TableRow(this);
-		TableRow rowDayLabels2 = new TableRow(this);
+		ArrayList<TableRow> rows = new ArrayList<TableRow>();
+		for (int i = 0; i < totalRows; i++) {
+			rows.add(new TableRow(this));
+		}
 
-		
-		rowDayLabels1.addView(addImage());
-		rowDayLabels1.addView(addImage());
-		rowDayLabels1.addView(addImage());
-		rowDayLabels1.addView(addImage());
-		rowDayLabels2.addView(addImage());
-		
+		for (int i = 0; i < rows.size(); i++) {
+			TableRow row = rows.get(i);
 
-		rowDayLabels2.addView(day5Label);
+			for (int j = 0; j < stampsPerRow; j++) {
+				int curPos = i * stampsPerRow + j;
+				if (curPos < stamp.getNowCnt())
+					row.addView(goodJobStamp());
+				else if (curPos >= stamp.getGoalCnt())
+					break;
+				else
+					row.addView(emptyStamp());
+			}
+		}
 
 		table.addView(rowTitle);
-		table.addView(rowDayLabels1);
-		table.addView(rowDayLabels2);
+		for (int i = 0; i < rows.size(); i++) {
+			table.addView(rows.get(i));
+		}
 
 		setContentView(table);
+	}
+	
+	private PraiseStamp getStampFromDB() {
+		PraiseStamp stamp = null;
+		try {
+			Dao<PraiseStamp, Integer> stampDao = dtoFactory.getStampDao();
+			List<PraiseStamp> stampList = stampDao.queryForAll();
+			stamp = stampList.get(0);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return stamp;
+	}
+
+	private PraiseStamp getTestStamp() {
+		PraiseStamp stamp = new PraiseStamp("ÌÅ¨Î¶¨Ïä§ÎßàÏä§ ÏÑ†Î¨º", 10);
+		stamp.setNowCnt(5);
+
+		return stamp;
 	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		
+		dtoFactory = (DtoFactory)getApplication();
+		
+		PraiseStamp stamp = getTestStamp();
+		try {
+			Dao<PraiseStamp, Integer> stampDao = dtoFactory.getStampDao();
+			stampDao.create(stamp);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
-//		createTables();
+		createTables();
 	}
 
 	@Override
@@ -81,5 +135,4 @@ public class MainActivity extends Activity {
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
-
 }
