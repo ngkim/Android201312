@@ -46,6 +46,14 @@ public class PraiseStampDao {
 		}
 	}
 	
+	public void updateStamp(PraiseStamp stamp) {
+		try {
+			stampDao.update(stamp);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public void deleteStamp(PraiseStamp stamp) {
 		try {
 			stampDao.delete(stamp);			
