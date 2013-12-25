@@ -10,6 +10,7 @@ import com.lovememe.praisestamp.db.PraiseStampDao;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -19,7 +20,8 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 public class MainActivity extends Activity {
-
+	public final static String EXTRA_MESSAGE = "com.lovememe.praisestamp.STAMP"; 
+	
 	private int stampsPerRow = 3;
 	private PraiseStampDao stampDao;
 	private PraiseStamp stamp;
@@ -73,24 +75,9 @@ public class MainActivity extends Activity {
 		setContentView(table);
 	}
 	
-	private PraiseStamp getStampFromDB() {
-		try {
-			List<PraiseStamp> stampList = stampDao.getStampList();
-			if(stampList == null) {
-				setTestStamp();
-				stampDao.insertStamp(stamp);
-			} else {
-				stamp = stampList.get(0);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return stamp;
-	}
-
 	private void setTestStamp() {
-		stamp = new PraiseStamp("Christmas Gift!!!", 15);
-		stamp.setNowCnt(8);
+		Intent i = getIntent();
+		stamp = (PraiseStamp)i.getSerializableExtra(EXTRA_MESSAGE);
 	}
 
 	@Override
@@ -101,7 +88,7 @@ public class MainActivity extends Activity {
 		try {
 			stampDao = new PraiseStampDao(this);
 			stampDao.createStampTable();
-			getStampFromDB();
+			setTestStamp();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -32,7 +32,7 @@ public class DBManager {
 			sqliteDatabase = context.openOrCreateDatabase(DATABASE_NAME,
 					SQLiteDatabase.CREATE_IF_NECESSARY, null);
 		} catch (Exception e) {
-			Log.e("DATABASE", "획득 실패");
+			Log.e("DATABASE", "Error!");
 		}
 
 		return new AndroidConnectionSource(sqliteDatabase);

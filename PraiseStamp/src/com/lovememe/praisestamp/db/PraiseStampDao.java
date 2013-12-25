@@ -45,4 +45,12 @@ public class PraiseStampDao {
 			e.printStackTrace();
 		}
 	}
+	
+	public void deleteStamp(PraiseStamp stamp) {
+		try {
+			stampDao.delete(stamp);			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 }

@@ -1,14 +1,16 @@
 package com.lovememe.praisestamp.db;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+@SuppressWarnings("serial")
 @DatabaseTable(tableName = "praise_stamp")
-public class PraiseStamp {
+public class PraiseStamp implements Serializable {
 
-	@DatabaseField(id = true, generatedId = true)
+	@DatabaseField(generatedId = true)
 	private int id;
 	@DatabaseField
 	private String title;
@@ -21,6 +23,11 @@ public class PraiseStamp {
 	@DatabaseField
 	private Date startDate;
 
+	public PraiseStamp() {
+		this.title = "";
+		this.goalCnt = 0;
+	}
+	
 	public PraiseStamp(String title, int goal) {
 		this.title = title;
 		this.goalCnt = goal;
