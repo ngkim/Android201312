@@ -76,14 +76,14 @@ public class ListActivity extends Activity {
 			layout.addView(row);
 		}
 
-		Button btnCallMain = (Button) findViewById(R.id.button1);
+		Button btnCallMain = (Button) findViewById(R.id.btn_register);
 		
 		btnCallMain.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Log.i("onClick", "CallSubActivity");
 				Intent intentSubActivity = new Intent(ListActivity.this,
-						MainActivity.class);
+						NewStampActivity.class);
 				startActivity(intentSubActivity);				
 			}
 		});

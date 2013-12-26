@@ -81,6 +81,8 @@ public class StampView extends TextView {
 		setCompoundDrawablesWithIntrinsicBounds(0,resImage,0,0);
 	}
 	
+	
+	
 	private void addOnClickListener() {
 		setOnClickListener(new View.OnClickListener() {
 		    @Override

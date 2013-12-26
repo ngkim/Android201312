@@ -10,10 +10,10 @@
     tools:context=".ListActivity" >
 
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/btn_register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="34dp"
-        android:text="Show Stamp" />
+        android:text="@string/str_new" />
 
 </TableLayout>

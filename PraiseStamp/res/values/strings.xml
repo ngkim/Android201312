@@ -8,5 +8,12 @@
     <string name="str_yes">예</string>
     <string name="str_no">아니오</string>
     <string name="title_activity_list">ListActivity</string>
+    <string name="title_activity_new_stamp">NewStampActivity</string>
+    <string name="stamp_title">Title</string>
+    <string name="stamp_present">Present</string>
+    <string name="str_register">Register</string>
+    <string name="str_goal">Goal</string>
+    <string name="str_reset">Reset</string>
+    <string name="str_new">New Stamp</string>
 
 </resources>
