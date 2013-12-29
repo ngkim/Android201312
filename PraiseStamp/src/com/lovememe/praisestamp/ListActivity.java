@@ -1,5 +1,6 @@
 package com.lovememe.praisestamp;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.loveme.praisestamp.R;
@@ -17,6 +18,7 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -29,24 +31,30 @@ public class ListActivity extends Activity {
 	private ListView listView ;
 	private PraiseStampDao stampDao;
 	public final static String EXTRA_MESSAGE = "com.lovememe.praisestamp.STAMP"; 
+	ArrayList<PraiseStamp> stampArrayList;
 	
-	class TextOnClickListener implements OnClickListener {
-		PraiseStamp stamp;
+	class StampOnItemClickListener implements AdapterView.OnItemClickListener {
 		
-		public TextOnClickListener(PraiseStamp stamp) {
-			this.stamp = stamp;
+		public StampOnItemClickListener() {		
 		}
 		
 		@Override
-		public void onClick(View v) {
-			sendMessage(stamp);
+		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+			TextView viewText = (TextView)view;
+			
+			Log.i("LIST ON CLICK", "VIEW= " + viewText.getText().toString());
+			Log.i("LIST ON CLICK", "POSITION= " + position);
+			Log.i("LIST ON CLICK", "ID= " + id);
+			Log.i("LIST ON CLICK", "STAMP ID= " + stampArrayList.get(position).getId());
+			
+			sendMessage(stampArrayList.get(position).getId());
 		}
 	}
 	
-	private void sendMessage(PraiseStamp stamp){
+	private void sendMessage(int id){
 		Log.i("onClick", "CallSubActivity");
 		Intent intent = new Intent(this, MainActivity.class);
-		intent.putExtra(EXTRA_MESSAGE, stamp.getId());
+		intent.putExtra(EXTRA_MESSAGE, id);
 		startActivity(intent);
 	}
 	
@@ -57,6 +65,7 @@ public class ListActivity extends Activity {
 		
 		// Get ListView object from xml
         listView = (ListView) findViewById(R.id.listView1);
+        stampArrayList = new ArrayList<PraiseStamp>();
 		
 		try {
 			stampDao = new PraiseStampDao(this);
@@ -65,44 +74,31 @@ public class ListActivity extends Activity {
 			e.printStackTrace();
 		}
 		
-		 // Defined Array values to show in ListView
-        String[] values = new String[] { "Android List View", 
-                                         "Adapter implementation",
-                                         "Simple List View In Android",
-                                         "Create List View Android", 
-                                         "Android Example", 
-                                         "List View Source Code", 
-                                         "List View Array Adapter", 
-                                         "Android Example List View" 
-                                        };
-		
-     // Define a new Adapter
-        // First parameter - Context
-        // Second parameter - Layout for the row
-        // Third parameter - ID of the TextView to which the data is written
-        // Forth - the Array of data
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-          android.R.layout.simple_list_item_1, android.R.id.text1, values);
-        
-        // Assign adapter to ListView
-        listView.setAdapter(adapter); 
-        
 		TableLayout layout = (TableLayout) findViewById(R.id.TableLayout1);
 		
 		List<PraiseStamp> stampList = stampDao.getStampList();
+		ArrayList<String> stampTitleList = new ArrayList<String>();
 		for ( int i = 0; i < stampList.size(); i++ ){
-			TableRow row = new TableRow(this);
-			row.setGravity(Gravity.CENTER_HORIZONTAL);
+//			TableRow row = new TableRow(this);
+//			row.setGravity(Gravity.CENTER_HORIZONTAL);
 			
 			PraiseStamp stamp = stampList.get(i);
-			TextView text = new TextView(this);
-			text.setText(stamp.getTitle());
-			text.setOnClickListener(new TextOnClickListener(stamp));
+//			TextView text = new TextView(this);
+//			text.setText(stamp.getTitle());
+//			text.setOnItemClickListener(new StampOnItemClickListener(stamp));
 			
-			row.addView(text);
-			layout.addView(row);
+//			row.addView(text);
+//			layout.addView(row);
+			stampArrayList.add(stamp);
+			stampTitleList.add(stamp.getTitle());
 		}
+		
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+        		android.R.layout.simple_list_item_1, stampTitleList);
+		
+		 // Assign adapter to ListView
+        listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new StampOnItemClickListener());
 
 		Button btnCallMain = (Button) findViewById(R.id.btn_register);
 		

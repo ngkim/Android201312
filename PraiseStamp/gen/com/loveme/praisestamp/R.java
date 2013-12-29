@@ -36,11 +36,13 @@ public final class R {
         public static final int ImageView08=0x7f080009;
         public static final int ImageView09=0x7f08000e;
         public static final int ImageView10=0x7f08000d;
+        public static final int RelativeLayout1=0x7f080019;
         public static final int TableLayout1=0x7f080000;
-        public static final int action_settings=0x7f080019;
+        public static final int action_settings=0x7f08001b;
         public static final int btn_register=0x7f080001;
         public static final int btn_reset=0x7f080018;
         public static final int editGoal=0x7f080014;
+        public static final int firstLine=0x7f08001a;
         public static final int imageView1=0x7f080011;
         public static final int listView1=0x7f080002;
         public static final int stamp_present=0x7f080016;

@@ -5,7 +5,6 @@ import java.util.List;
 import com.loveme.praisestamp.R;
 import com.loveme.praisestamp.R.layout;
 import com.loveme.praisestamp.R.menu;
-import com.lovememe.praisestamp.ListActivity.TextOnClickListener;
 import com.lovememe.praisestamp.db.PraiseStamp;
 import com.lovememe.praisestamp.db.PraiseStampDao;
 
