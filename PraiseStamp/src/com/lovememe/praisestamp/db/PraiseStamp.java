@@ -76,6 +76,10 @@ public class PraiseStamp implements Serializable {
 	public void increaseNowCnt() {
 		nowCnt++;
 	}
+	
+	public void decreaseNowCnt() {
+		nowCnt--;
+	}
 
 	public Date getStartDate() {
 		return startDate;

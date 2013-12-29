@@ -37,6 +37,15 @@ public class PraiseStampDao {
 		}
 		return null;
 	}
+	
+	public PraiseStamp getStampById(int id) {
+		try {
+			return stampDao.queryForId(id + "");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 
 	public void insertStamp(PraiseStamp stamp) {
 		try {

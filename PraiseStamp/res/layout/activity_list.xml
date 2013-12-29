@@ -16,4 +16,10 @@
         android:layout_marginBottom="34dp"
         android:text="@string/str_new" />
 
+    <ListView
+        android:id="@+id/listView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+    </ListView>
+
 </TableLayout>

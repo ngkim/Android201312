@@ -17,14 +17,16 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
 public class ListActivity extends Activity {
-	
+	private ListView listView ;
 	private PraiseStampDao stampDao;
 	public final static String EXTRA_MESSAGE = "com.lovememe.praisestamp.STAMP"; 
 	
@@ -44,7 +46,7 @@ public class ListActivity extends Activity {
 	private void sendMessage(PraiseStamp stamp){
 		Log.i("onClick", "CallSubActivity");
 		Intent intent = new Intent(this, MainActivity.class);
-		intent.putExtra(EXTRA_MESSAGE, stamp);
+		intent.putExtra(EXTRA_MESSAGE, stamp.getId());
 		startActivity(intent);
 	}
 	
@@ -53,6 +55,9 @@ public class ListActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_list);
 		
+		// Get ListView object from xml
+        listView = (ListView) findViewById(R.id.listView1);
+		
 		try {
 			stampDao = new PraiseStampDao(this);
 			stampDao.createStampTable();			
@@ -60,6 +65,29 @@ public class ListActivity extends Activity {
 			e.printStackTrace();
 		}
 		
+		 // Defined Array values to show in ListView
+        String[] values = new String[] { "Android List View", 
+                                         "Adapter implementation",
+                                         "Simple List View In Android",
+                                         "Create List View Android", 
+                                         "Android Example", 
+                                         "List View Source Code", 
+                                         "List View Array Adapter", 
+                                         "Android Example List View" 
+                                        };
+		
+     // Define a new Adapter
+        // First parameter - Context
+        // Second parameter - Layout for the row
+        // Third parameter - ID of the TextView to which the data is written
+        // Forth - the Array of data
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+          android.R.layout.simple_list_item_1, android.R.id.text1, values);
+        
+        // Assign adapter to ListView
+        listView.setAdapter(adapter); 
+        
 		TableLayout layout = (TableLayout) findViewById(R.id.TableLayout1);
 		
 		List<PraiseStamp> stampList = stampDao.getStampList();
@@ -87,20 +115,6 @@ public class ListActivity extends Activity {
 				startActivity(intentSubActivity);				
 			}
 		});
-	}
-	
-	private void addStampList() {
-		try {			
-			PraiseStamp stamp = new PraiseStamp("Christmas Gift!!!", 15);
-			stamp.setNowCnt(8);
-			stampDao.insertStamp(stamp);
-			
-			stamp = new PraiseStamp("New year present!!!", 20);
-			stamp.setNowCnt(3);
-			stampDao.insertStamp(stamp);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 	
 	@Override
